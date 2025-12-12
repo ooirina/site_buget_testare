@@ -1,56 +1,82 @@
-// app.js
-let incomeTotal = 0;
-let expenses = [];
+// Totaluri simple
+let totalIncome = 0;
+let totalExpenses = 0;
 
-// Functie de actualizare rezultate
+// Actualizare afișaj
 function updateResults() {
-    const totalExpenses = expenses.reduce((a, b) => a + b, 0);
-    document.getElementById('totalIncomeValue').innerText = incomeTotal.toLocaleString();
-    document.getElementById('totalExpensesValue').innerText = totalExpenses.toLocaleString();
-    document.getElementById('finalBudgetValue').innerText = (incomeTotal - totalExpenses).toLocaleString();
+    document.getElementById("totalIncomeValue").innerText = totalIncome + " RON";
+    document.getElementById("totalExpensesValue").innerText = totalExpenses + " RON";
+    document.getElementById("finalBudgetValue").innerText = (totalIncome - totalExpenses) + " RON";
 }
 
-// Adaugare venit
-document.getElementById('add_income').addEventListener('click', () => {
-    const val = parseFloat(document.getElementById('incomeInput').value);
-    if(!isNaN(val)) {
-        incomeTotal += val;
-        document.getElementById('incomeInput').value = '';
-        updateResults();
-    }
+// Adaugă venit
+document.getElementById("add_income").addEventListener("click", () => {
+    const val = parseFloat(document.getElementById("incomeInput").value);
+    if (isNaN(val) || val <= 0) return alert("Sumă invalidă!");
+
+    totalIncome += val;
+    document.getElementById("incomeInput").value = "";
+
+    updateResults();
 });
 
-// Adaugare cheltuiala
-document.getElementById('add_expense').addEventListener('click', () => {
-    const val = parseFloat(document.getElementById('expenseInput').value);
-    if(!isNaN(val)) {
-        expenses.push(val);
-        document.getElementById('expenseInput').value = '';
-        renderExpenses();
-        updateResults();
-    }
+// Adaugă cheltuială
+document.getElementById("add_expense").addEventListener("click", () => {
+    const val = parseFloat(document.getElementById("expenseInput").value);
+    if (isNaN(val) || val <= 0) return alert("Sumă invalidă!");
+
+    totalExpenses += val;
+    document.getElementById("expenseInput").value = "";
+
+    updateResults();
 });
 
-function renderExpenses() {
-    const list = document.getElementById('expenseList');
-    list.innerHTML = '';
-    expenses.forEach((e, i) => {
-        const li = document.createElement('li');
-        li.textContent = e.toLocaleString();
-        list.appendChild(li);
-    });
-}
+// Scade venit
+document.getElementById("delete_income_btn").addEventListener("click", () => {
+    const val = parseFloat(document.getElementById("delete_income_input").value);
+    if (isNaN(val) || val <= 0) return alert("Sumă invalidă!");
 
-// Conversie valutară simplă (rate fixe)
-const rates = {
-    "RON": 1,
-    "EUR": 0.2,
-    "USD": 0.22
-};
+    totalIncome -= val;
+    if (totalIncome < 0) totalIncome = 0;
 
-document.getElementById('convert').addEventListener('click', () => {
-    const currency = document.getElementById('currencySelect').value;
-    const finalBudget = incomeTotal - expenses.reduce((a,b)=>a+b,0);
+    document.getElementById("delete_income_input").value = "";
+
+    updateResults();
+});
+
+// Scade cheltuială
+document.getElementById("delete_expense_btn").addEventListener("click", () => {
+    const val = parseFloat(document.getElementById("delete_expense_input").value);
+    if (isNaN(val) || val <= 0) return alert("Sumă invalidă!");
+
+    totalExpenses -= val;
+    if (totalExpenses < 0) totalExpenses = 0;
+
+    document.getElementById("delete_expense_input").value = "";
+
+    updateResults();
+});
+
+// Reset
+document.getElementById("reset_all").addEventListener("click", () => {
+    if (!confirm("Resetezi tot?")) return;
+
+    totalIncome = 0;
+    totalExpenses = 0;
+
+    updateResults();
+    document.getElementById("convertedValue").innerText = "—";
+});
+
+// Rate valutare
+const rates = { RON: 1, EUR: 0.2, USD: 0.22 };
+
+// Conversie
+document.getElementById("convert").addEventListener("click", () => {
+    const currency = document.getElementById("currencySelect").value;
+    const finalBudget = totalIncome - totalExpenses;
     const converted = finalBudget * rates[currency];
-    document.getElementById('convertedValue').innerText = converted.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ' + currency;
+
+    document.getElementById("convertedValue").innerText =
+        converted.toFixed(2) + " " + currency;
 });

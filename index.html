@@ -24,10 +24,10 @@
         </div>
     </header>
 
-    <!-- GRID / LAYOUT -->
+    <!-- GRID -->
     <div class="grid">
 
-        <!-- STÂNGA: income + expenses + currency -->
+        <!-- STÂNGA -->
         <div>
 
             <!-- VENITURI -->
@@ -37,6 +37,11 @@
                 <div class="row">
                     <input type="number" id="incomeInput" placeholder="0">
                     <button id="add_income">Adaugă</button>
+                </div>
+
+                <div class="row">
+                    <input type="number" id="delete_income_input" placeholder="Sumă de scăzut">
+                    <button id="delete_income_btn">Șterge venit</button>
                 </div>
             </section>
 
@@ -49,10 +54,13 @@
                     <button id="add_expense">Adaugă</button>
                 </div>
 
-                <ul id="expenseList"></ul>
+                <div class="row">
+                    <input type="number" id="delete_expense_input" placeholder="Sumă de scăzut">
+                    <button id="delete_expense_btn">Șterge cheltuială</button>
+                </div>
             </section>
 
-            <!-- CONVERSIE VALUTARĂ -->
+            <!-- CONVERSIE -->
             <section class="box">
                 <h2 id="currency">Conversie Valutară</h2>
 
@@ -61,16 +69,16 @@
                         <option value="RON">RON</option>
                         <option value="EUR">EUR</option>
                         <option value="USD">USD</option>
+                        <option value="GBP">GBP</option>
                     </select>
                     <button id="convert">Convertește</button>
                 </div>
 
                 <p id="convertedValue">—</p>
             </section>
-
         </div>
 
-        <!-- DREAPTA: rezultate -->
+        <!-- DREAPTA -->
         <aside class="results-panel">
 
             <div class="result-item">
@@ -88,6 +96,7 @@
                 <span id="finalBudgetValue">0</span>
             </div>
 
+            <button id="reset_all" class="reset-btn">Resetează tot</button>
         </aside>
 
     </div>
@@ -100,7 +109,8 @@
 </div>
 
 <!-- SCRIPTS -->
-<script src="js/i18n.js"></script>
+<script src="js/data.js"></script>
+<script src="js/traduceri.js"></script>
 <script src="js/app.js"></script>
 
 </body>
